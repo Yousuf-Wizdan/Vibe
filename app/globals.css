@@ -1,5 +1,35 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+@import "@uploadthing/react/styles.css";
+
+/* Protect dialog positioning from UploadThing styles */
+[data-slot="dialog-content"] {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 50 !important;
+}
+
+/* Additional protection for dialog overlay */
+[data-slot="dialog-overlay"] {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 50 !important;
+}
+
+/* Ensure UploadThing doesn't affect dialog portal */
+[data-slot="dialog-portal"] {
+  position: relative !important;
+}
+
+/* Prevent UploadThing from changing modal/dialog positioning */
+.ut-button,
+.ut-uploading,
+.ut-upload-icon,
+.ut-dropzone {
+  position: relative !important;
+}
 
 @custom-variant dark (&:is(.dark *));
 

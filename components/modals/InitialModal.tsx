@@ -2,7 +2,7 @@
 
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { SubmitHandler, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import React, { useEffect, useState } from 'react'
 import {
     Dialog,
@@ -22,6 +22,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
+import FileUploadWrapper from '../FileUploadWrapper'
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Server Name is Required!" }),
@@ -69,7 +70,22 @@ const InitialModal = () => {
                     >
                         <div className='space-y-8 px-6'>
                             <div className='flex items-center justify-center text-center'>
-                                {/* TODO IMAGE UPLOAD */}
+                                <FormField 
+                                    control={form.control}
+                                    name='imageUrl'
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormControl>
+                                                <FileUploadWrapper 
+                                                    endpoint={"serverImage"}
+                                                    value={field.value}
+                                                    // here what onChange does is update the formState (ex. imageUrl)
+                                                    onChange={field.onChange}
+                                                 />
+                                            </FormControl>
+                                        </FormItem>
+                                    )}
+                                />
                             </div>
 
                             <FormField 

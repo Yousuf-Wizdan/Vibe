@@ -21,7 +21,11 @@ const SetUpPage = async () => {
         return redirect(`/servers/${server.id}`)
     }
 
-  return <InitialModal />
+  return (
+    <div className='flex items-center justify-center'>
+      <InitialModal />
+    </div>
+  )
 }
 
 export default SetUpPage
