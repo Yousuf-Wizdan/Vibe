@@ -6,6 +6,7 @@ import React from 'react'
 
 const SetUpPage = async () => {
     const profile = await initalProfile();
+    
     // some is a Prisma filter operator that means: “At least one related record should satisfy this condition.”
     // basically here to find which server is user joined in 
     const server = await db.server.findFirst({

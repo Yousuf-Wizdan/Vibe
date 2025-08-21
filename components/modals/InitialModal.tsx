@@ -4,6 +4,8 @@ import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+
 import {
     Dialog,
     DialogContent,
@@ -23,6 +25,7 @@ import {
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import FileUploadWrapper from '../FileUploadWrapper'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Server Name is Required!" }),
@@ -31,6 +34,7 @@ const formSchema = z.object({
 
 const InitialModal = () => {
     const [isMounted , setIsMounted] = useState(false)
+    const router = useRouter();
 
     useEffect(() => {
         setIsMounted(true);
@@ -47,7 +51,16 @@ const InitialModal = () => {
         const isLoading = form.formState.isSubmitting;
 
         const onSubmit = async (values: z.infer <typeof formSchema>) => {
-            console.log(values);
+            try{
+                await axios.post('/api/servers' , values)
+
+                form.reset();
+                router.refresh() //soft-refresh - maintains state only updates the server components
+                // window.location.reload() // hard-refresh - resets state (whole page)
+
+            }catch(err){
+                console.log("onsubmit error (initialModel)" ,err)
+            }
         }
 
     if(!isMounted) return null;
