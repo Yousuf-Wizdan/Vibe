@@ -4,6 +4,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import ModelProviders from "@/components/providers/ModelProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider >
+    <ClerkProvider
+      afterSignOutUrl={'/'}
+    >
       <html lang="en" suppressHydrationWarning>
         <body
           className={cn(`
@@ -41,6 +44,7 @@ export default function RootLayout({
             defaultTheme="dark"
             enableSystem
             disableTransitionOnChange>
+            <ModelProviders />
             {children}
           </ThemeProvider>
         </body>
