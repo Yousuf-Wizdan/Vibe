@@ -1,11 +1,9 @@
 import React from 'react'
 
-const ServerPage = async ({params}: {params: Promise<{serverId: string}>}) => {
-
-  const serverId = (await params).serverId
+const ServerPage = async () => {
 
   return (
-    <div>ServerPage: {serverId}</div>
+    <div>ServerPage</div>
   )
 }
 
