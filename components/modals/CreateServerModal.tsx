@@ -26,7 +26,7 @@ import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import FileUploadWrapper from '../FileUploadWrapper'
 import { useRouter } from 'next/navigation'
-import { useModel } from '@/app/hooks/use-model-store'
+import { useModel } from '@/hooks/use-model-store'
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Server Name is Required!" }),

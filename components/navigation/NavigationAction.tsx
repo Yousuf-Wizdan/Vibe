@@ -2,7 +2,7 @@
 import { Plus } from 'lucide-react'
 import React  from 'react'
 import ActionToolTip from '../ActionToolTip'
-import { useModel } from '@/app/hooks/use-model-store'
+import { useModel } from '@/hooks/use-model-store'
 
 const NavigationAction = () => {
     const {onOpen} = useModel();

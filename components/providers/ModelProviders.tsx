@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react'
 
 import CreateServerModal from '../modals/CreateServerModal'
+import InviteModal from '../modals/InviteModal';
 
 const ModelProviders = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -18,6 +19,7 @@ const ModelProviders = () => {
     return (
         <>
             <CreateServerModal />
+            <InviteModal />
         </>
     )
 }

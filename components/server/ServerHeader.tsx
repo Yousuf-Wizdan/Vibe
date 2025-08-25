@@ -1,8 +1,11 @@
+'use client'
+
 import React from 'react'
 import { ServerWithMembersWithProfiles } from '@/types'
 import { MemberRole } from '@/lib/generated/prisma'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '../ui/dropdown-menu'
 import { ChevronDown, LogOutIcon, PlusCircle, Settings, Trash, UserPlus, Users } from 'lucide-react'
+import { useModel } from '@/hooks/use-model-store'
 
 interface ServerHeaderProps {
     server: ServerWithMembersWithProfiles,
@@ -13,6 +16,8 @@ const ServerHeader = ({
     server,
     role
 }: ServerHeaderProps) => {
+
+    const {onOpen} = useModel()
 
     const isAdmin = role === MemberRole.ADMIN;
     const isModerator = isAdmin || role === MemberRole.MODERATOR;
@@ -35,6 +40,7 @@ const ServerHeader = ({
             >
                 {isModerator && (
                     <DropdownMenuItem
+                        onClick={() => onOpen('invite' , {server})}
                         className='text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer'
                     >
                         Invite People
