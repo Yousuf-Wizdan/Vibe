@@ -3,7 +3,7 @@
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import React from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 
 import {
@@ -33,12 +33,14 @@ const formSchema = z.object({
     imageUrl: z.string().min(1, { message: "Server Image is Required!" })
 })
 
-const CreateServerModal = () => {
+const EditServerModal = () => {
     const router = useRouter();
 
-    const {isOpen , onClose , type} = useModel()
+    const {isOpen , onClose , type , data} = useModel()
+    const server = {data}.data.server;
 
-    const isModelOpen = isOpen && type == 'createServer';
+    console.log('server here' , server)
+    const isModelOpen = isOpen && type == 'editServer';
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -48,11 +50,18 @@ const CreateServerModal = () => {
         }
     })
 
+    useEffect(() => {
+        if(server){
+            form.setValue("name" , server.name)
+            form.setValue('imageUrl' , server.imageUrl ?? "")
+        }
+    },[server , form])
+
     const isLoading = form.formState.isSubmitting;
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await axios.post('/api/servers', values)
+            await axios.patch(`/api/servers/${server?.id}`, values)
 
             form.reset();
             router.refresh() //soft-refresh - maintains state only updates the server components
@@ -130,7 +139,7 @@ const CreateServerModal = () => {
                         </div>
                         <DialogFooter className='bg-gray-100 px-6 py-4'>
                             <Button variant={"primary"} disabled={isLoading}>
-                                Create
+                                Save
                             </Button>
                         </DialogFooter>
                     </form>
@@ -140,4 +149,4 @@ const CreateServerModal = () => {
     )
 }
 
-export default CreateServerModal
+export default EditServerModal

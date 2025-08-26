@@ -37,7 +37,6 @@ const InviteModal = () => {
 
     const inviteUrl = `${origin}/invite/${server?.inviteCode}`;
 
-
     // copy clipboard logic
     const onCopy = () => {
         navigator.clipboard.writeText(inviteUrl);
