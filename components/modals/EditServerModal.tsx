@@ -39,7 +39,7 @@ const EditServerModal = () => {
     const {isOpen , onClose , type , data} = useModel()
     const server = {data}.data.server;
 
-    console.log('server here' , server)
+    // console.log('server here' , server)
     const isModelOpen = isOpen && type == 'editServer';
 
     const form = useForm({

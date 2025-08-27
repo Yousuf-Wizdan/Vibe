@@ -1,0 +1,158 @@
+'use client'
+    // 4:42:03
+import * as z from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import React, { useState } from 'react'
+import axios from 'axios'
+
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle
+} from '@/components/ui/dialog'
+
+
+import { useRouter } from 'next/navigation'
+import { useModel } from '@/hooks/use-model-store'
+import { Label } from '../ui/label'
+import { Input } from '../ui/input'
+import { Button } from '../ui/button'
+import { Check, Copy, Gavel, Loader, Loader2, MoreVertical, RefreshCcw, ShieldAlert, ShieldCheck, ShieldIcon, ShieldQuestion } from 'lucide-react'
+import { ServerWithMembersWithProfiles } from '@/types'
+import { ScrollArea } from '../ui/scroll-area'
+import UserAvatar from '../UserAvatar'
+
+import {
+
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuPortal,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubContent,
+    DropdownMenuTrigger,
+    DropdownMenuSubTrigger
+
+} from '@/components/ui/dropdown-menu'
+
+const roleIconMap = {
+    "GUEST": null,
+    "MODERATOR": <ShieldCheck
+        className="h-4 w-4 ml-2 text-indigo-500"
+    />,
+    "ADMIN": <ShieldAlert className='h-4 w-4 text-rose-500' />
+}
+
+const MemberModal = () => {
+    const { onOpen, isOpen, onClose, type, data } = useModel()
+    const [loadingId, setLoadingId] = useState();
+
+    const isModelOpen = isOpen && type == 'members';
+
+    // console.log("membermodal" , (data as any).server?.members[0])
+    const { server } = data as { server: ServerWithMembersWithProfiles };
+
+    return (
+        <Dialog open={isModelOpen} onOpenChange={onClose}>
+            <DialogContent className='bg-white text-black overflow-hidden'>
+                <DialogHeader className='pt-8 px-6'>
+                    <DialogTitle className='text-2xl text-center font-black'>
+                        Invite Friends
+                    </DialogTitle>
+                    <DialogDescription
+                        className='text-center text-zinc-500'
+                    >
+                        {server?.members.length} Members
+                    </DialogDescription>
+                </DialogHeader>
+                <ScrollArea
+                    className='mt-8 max-h-[420px] pr-6'
+                >
+                    {server?.members.map(member => (
+                        <div
+                            key={member.id}
+                            className='flex items-center gap-x-2 mb-6'
+                        >
+                            <UserAvatar
+                                src={member.profile.imageUrl}
+                                className={''}
+                            />
+                            <div className='flex flex-col gap-y-1'>
+                                <div className='text-xs font-semibold flex items-center gap-x-1'>
+                                    {member.profile.name}
+                                    {roleIconMap[member.role]}
+                                </div>
+                                <p className='text-xs text-zinc-500'>
+                                    {member.profile.email}
+                                </p>
+                            </div>
+                            {
+                                server.profileId !== member.profileId && loadingId !== member.id && (
+                                    <div className='ml-auto'>
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger>
+                                                <MoreVertical className='h-4 w-4 text-zinc-500' />
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent side='left'>
+                                                <DropdownMenuSub>
+                                                    <DropdownMenuSubTrigger
+                                                        className='flex items-center'
+                                                    >
+                                                        <ShieldQuestion
+                                                            className='w-4 h-4 mr-2'
+                                                        />
+                                                        <span>Role</span>
+                                                    </DropdownMenuSubTrigger>
+                                                    <DropdownMenuPortal>
+                                                        <DropdownMenuSubContent>
+                                                            <DropdownMenuItem>
+                                                                <ShieldIcon className='h-4 w-4 mr-2' />
+                                                                Guest
+                                                                {member.role === 'GUEST' && (
+                                                                    <Check
+                                                                        className='h-4 w-4 ml-auto'
+                                                                    />
+                                                                )}
+                                                            </DropdownMenuItem>
+                                                            <DropdownMenuItem>
+                                                                <ShieldIcon className='h-4 w-4 mr-2' />
+                                                                Moderator
+                                                                {member.role === 'MODERATOR' && (
+                                                                    <Check
+                                                                        className='h-4 w-4 ml-auto'
+                                                                    />
+                                                                )}
+                                                            </DropdownMenuItem>
+                                                        </DropdownMenuSubContent>
+                                                    </DropdownMenuPortal>
+                                                </DropdownMenuSub>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem>
+                                                    <Gavel className='h-4 w-4 mr-2' />
+                                                    Kick
+                                                </DropdownMenuItem>    
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
+                                )
+                            }
+                            {loadingId === member.id && (
+                                <Loader2 
+                                    className='animate-spin text-zinc-500 ml-auto w-4 h-4'
+                                />
+                            )}
+                        </div>
+                    ))}
+                    
+                </ScrollArea>
+            </DialogContent>
+        </Dialog>
+    )
+}
+
+export default MemberModal
