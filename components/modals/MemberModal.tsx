@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import React, { useState } from 'react'
 import axios from 'axios'
+import qs from 'query-string'
 
 import {
     Dialog,
@@ -39,6 +40,7 @@ import {
     DropdownMenuSubTrigger
 
 } from '@/components/ui/dropdown-menu'
+import { MemberRole } from '@/lib/generated/prisma'
 
 const roleIconMap = {
     "GUEST": null,
@@ -50,12 +52,67 @@ const roleIconMap = {
 
 const MemberModal = () => {
     const { onOpen, isOpen, onClose, type, data } = useModel()
-    const [loadingId, setLoadingId] = useState();
+    const [loadingId, setLoadingId] = useState("");
+    const router = useRouter();
 
     const isModelOpen = isOpen && type == 'members';
 
     // console.log("membermodal" , (data as any).server?.members[0])
     const { server } = data as { server: ServerWithMembersWithProfiles };
+
+    const onKick = async (memberId: string) => {
+        try{
+
+            setLoadingId(memberId)
+            
+            const url = qs.stringifyUrl({
+                url: `/api/members/${memberId}`,
+                query: {
+                    serverId: server.id
+                }
+            })
+
+            const {data} = await axios.delete(url);
+
+            router.refresh();
+            onOpen('members' , {server: data})
+
+        }catch(err){
+            console.log('OnKick Error:' , err)
+        }finally{
+            setLoadingId("")
+        }
+
+    }
+
+    const onRoleChange = async (memberId: string , role: MemberRole) => {
+        try{
+            setLoadingId(memberId);
+            
+            const url = qs.stringifyUrl({
+                url: `/api/members/${memberId}`,
+                query: {
+                    serverId: server.id,
+                    // memberId,
+                }
+            })
+
+            // console.log('url new' , url)
+
+            const {data} = await axios.patch(url , {role})
+
+            router.refresh()
+            // console.log("here" , data)
+            onOpen('members' , {server: data})
+
+
+
+        }catch(err){
+            console.log("OnRoleChange:" , err)
+        }finally{
+            setLoadingId("")
+        }
+    }
 
     return (
         <Dialog open={isModelOpen} onOpenChange={onClose}>
@@ -110,7 +167,9 @@ const MemberModal = () => {
                                                     </DropdownMenuSubTrigger>
                                                     <DropdownMenuPortal>
                                                         <DropdownMenuSubContent>
-                                                            <DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                onClick={() => onRoleChange(member.id , 'GUEST')}
+                                                            >
                                                                 <ShieldIcon className='h-4 w-4 mr-2' />
                                                                 Guest
                                                                 {member.role === 'GUEST' && (
@@ -119,7 +178,9 @@ const MemberModal = () => {
                                                                     />
                                                                 )}
                                                             </DropdownMenuItem>
-                                                            <DropdownMenuItem>
+                                                            <DropdownMenuItem
+                                                                 onClick={() => onRoleChange(member.id , 'MODERATOR')}
+                                                            >
                                                                 <ShieldIcon className='h-4 w-4 mr-2' />
                                                                 Moderator
                                                                 {member.role === 'MODERATOR' && (
@@ -132,7 +193,9 @@ const MemberModal = () => {
                                                     </DropdownMenuPortal>
                                                 </DropdownMenuSub>
                                                 <DropdownMenuSeparator />
-                                                <DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() => onKick(member.id)}
+                                                >
                                                     <Gavel className='h-4 w-4 mr-2' />
                                                     Kick
                                                 </DropdownMenuItem>    

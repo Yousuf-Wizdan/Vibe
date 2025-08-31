@@ -39,7 +39,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
             inviteCode: inviteCode
         }
     })
-    if(server){
+    if(!server){
         return redirect('/')
     }
 
