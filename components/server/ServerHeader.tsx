@@ -19,6 +19,8 @@ const ServerHeader = ({
 
     const {onOpen} = useModel()
 
+    // console.log("here" , server)
+
     const isAdmin = role === MemberRole.ADMIN;
     const isModerator = isAdmin || role === MemberRole.MODERATOR;
 
@@ -67,6 +69,7 @@ const ServerHeader = ({
                 )}
                 {isModerator && (
                     <DropdownMenuItem
+                        onClick={() => onOpen('createChannel')}
                         className='px-3 py-2 text-sm cursor-pointer'
                     >
                         Create Channels
