@@ -7,6 +7,7 @@ import InviteModal from '../modals/InviteModal';
 import EditServerModal from '../modals/EditServerModal';
 import MemberModal from '../modals/MemberModal';
 import CreateChannelModal from '../modals/CreateChannelModel';
+import LeaveServerModal from '../modals/LeaveServerModal';
 
 const ModelProviders = () => {
     const [isMounted, setIsMounted] = useState(false);
@@ -26,6 +27,7 @@ const ModelProviders = () => {
             <EditServerModal />
             <MemberModal />
             <CreateChannelModal />
+            <LeaveServerModal />
         </>
     )
 }
