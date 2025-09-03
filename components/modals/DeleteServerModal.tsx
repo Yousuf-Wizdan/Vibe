@@ -12,37 +12,35 @@ import {
     DialogTitle
 } from '@/components/ui/dialog'
 
-
 import { useRouter } from 'next/navigation'
 import { useModel } from '@/hooks/use-model-store'
 import { Button } from '../ui/button'
-import { useOrigin } from '@/hooks/use-origin'
 
-const LeaveServerModal = () => {
+const DeleteServerModal = () => {
     const router = useRouter();
     const { isOpen, onClose, type, data } = useModel()
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const isModelOpen = isOpen && type == 'leaveServer';
+    const isModelOpen = isOpen && type == 'deleteServer';
     const { server } = data;
 
-    const onLeave = async () => {
+    const onDelete = async () => {
 
-        try{
+        try {
 
             setIsLoading(true)
 
-            await axios.patch(`/api/servers/${server?.id}/leave`)
+            await axios.delete(`/api/servers/${server?.id}`)
             // console.log("too" , data);
             onClose();
 
             router.push('/')
-            
 
-        }catch(err){
-            console.log('OnLeave Error' , err)
-        }finally{
+
+        } catch (err) {
+            console.log('OnDelete Error', err)
+        } finally {
             setIsLoading(false)
         }
     }
@@ -52,10 +50,10 @@ const LeaveServerModal = () => {
             <DialogContent className='bg-white text-black p-0 overflow-hidden'>
                 <DialogHeader className='pt-8 px-6'>
                     <DialogTitle className='text-2xl text-center font-black'>
-                        Leave Server
+                        Delete Server
                     </DialogTitle>
                     <DialogDescription className='text-center text-zinc-500'>
-                        Are You Sure You Want To Leave <span className='font-semibold text-indigo-500'>{server?.name} ?</span>
+                        Are You Sure You Want To Do This? <span className='font-semibold text-indigo-500'>{server?.name}</span> Will Be Permanently Deleted
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className='bg-gray-100 px-6 py-4'>
@@ -69,7 +67,7 @@ const LeaveServerModal = () => {
                         </Button>
                         <Button
                             disabled={isLoading}
-                            onClick={onLeave}
+                            onClick={onDelete}
                             variant={'primary'}
                         >
                             Confirm
@@ -81,4 +79,4 @@ const LeaveServerModal = () => {
     )
 }
 
-export default LeaveServerModal
+export default DeleteServerModal

@@ -17,7 +17,7 @@ const ServerHeader = ({
     role
 }: ServerHeaderProps) => {
 
-    const {onOpen} = useModel()
+    const { onOpen } = useModel()
 
     // console.log("here" , server)
 
@@ -42,7 +42,7 @@ const ServerHeader = ({
             >
                 {isModerator && (
                     <DropdownMenuItem
-                        onClick={() => onOpen('invite' , {server})}
+                        onClick={() => onOpen('invite', { server })}
                         className='text-indigo-600 dark:text-indigo-400 px-3 py-2 text-sm cursor-pointer'
                     >
                         Invite People
@@ -51,7 +51,7 @@ const ServerHeader = ({
                 )}
                 {isAdmin && (
                     <DropdownMenuItem
-                        onClick={() => onOpen('editServer' , { server })}
+                        onClick={() => onOpen('editServer', { server })}
                         className='px-3 py-2 text-sm cursor-pointer'
                     >
                         Server Settings
@@ -60,7 +60,7 @@ const ServerHeader = ({
                 )}
                 {isAdmin && (
                     <DropdownMenuItem
-                        onClick={() => onOpen('members' , { server })}
+                        onClick={() => onOpen('members', { server })}
                         className='px-3 py-2 text-sm cursor-pointer'
                     >
                         Manage Members
@@ -81,6 +81,7 @@ const ServerHeader = ({
                 )}
                 {isAdmin && (
                     <DropdownMenuItem
+                        onClick={() => onOpen('deleteServer', { server })}
                         className='text-rose-500 px-3 py-2 text-sm cursor-pointer'
                     >
                         Delete Server
@@ -89,7 +90,7 @@ const ServerHeader = ({
                 )}
                 {!isAdmin && (
                     <DropdownMenuItem
-                        onClick={() => onOpen('leaveServer' , {server})}
+                        onClick={() => onOpen('leaveServer', { server })}
                         className='text-rose-500 px-3 py-2 text-sm cursor-pointer'
                     >
                         Leave Server
