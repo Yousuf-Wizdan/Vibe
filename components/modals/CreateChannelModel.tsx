@@ -3,7 +3,7 @@
 import * as z from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
-import React from 'react'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 import qs from 'query-string'
 
@@ -51,9 +51,10 @@ const CreateChannelModal = () => {
     const router = useRouter();
     const params = useParams();
     // console.log('params' , params)
-    const { isOpen, onClose, type } = useModel()
+    const { isOpen, onClose, type, data } = useModel()
 
     const isModelOpen = isOpen && type == 'createChannel';
+    const { channelType } = data;
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -62,6 +63,17 @@ const CreateChannelModal = () => {
             type: ChannelType.TEXT,
         }
     })
+
+    // when user select resptive channel type its type comes pre-selected
+    useEffect(() => {
+
+        if (channelType) {
+            form.setValue('type', channelType)
+        } else {
+            form.setValue('type', ChannelType.TEXT)
+        }
+
+    }, [channelType , form])
 
     const isLoading = form.formState.isSubmitting;
 
@@ -74,7 +86,7 @@ const CreateChannelModal = () => {
                     serverId: params.serverId
                 }
             })
-            
+
             await axios.post(url, values)
 
             form.reset();
