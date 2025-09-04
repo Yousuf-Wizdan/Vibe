@@ -12,31 +12,42 @@ import {
     DialogTitle
 } from '@/components/ui/dialog'
 
+import qs from 'query-string'
 import { useRouter } from 'next/navigation'
 import { useModel } from '@/hooks/use-model-store'
 import { Button } from '../ui/button'
 
-const DeleteServerModal = () => {
+const DeleteChannelModal = () => {
     const router = useRouter();
+
     const { isOpen, onClose, type, data } = useModel()
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const isModelOpen = isOpen && type == 'deleteServer';
-    const { server } = data;
+    const isModelOpen = isOpen && type == 'deleteChannel';
+    const { server , channel } = data;
 
     const onDelete = async () => {
 
         try {
 
             setIsLoading(true)
+        
+            const url = qs.stringifyUrl({
+                url: `/api/channels/${channel?.id}`,
+                query: {
+                    serverId: server?.id
+                }
+            })
 
-            await axios.delete(`/api/servers/${server?.id}`)
-            // console.log("too" , data);
+            // console.log('qs' , url)
+
+            await axios.delete(url)
+    
             onClose();
 
-            router.push('/')
-            
+            router.push(`/servers/${server?.id}`)
+            router.refresh()
 
 
         } catch (err) {
@@ -51,10 +62,10 @@ const DeleteServerModal = () => {
             <DialogContent className='bg-white text-black p-0 overflow-hidden'>
                 <DialogHeader className='pt-8 px-6'>
                     <DialogTitle className='text-2xl text-center font-black'>
-                        Delete Server
+                        Delete Channel
                     </DialogTitle>
                     <DialogDescription className='text-center text-zinc-500'>
-                        Are You Sure You Want To Do This? <span className='font-semibold text-indigo-500'>{server?.name}</span> Will Be Permanently Deleted
+                        Are You Sure You Want To Do This? <span className='font-semibold text-indigo-500'>#{channel?.name}</span> Will Be Permanently Deleted
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter className='bg-gray-100 px-6 py-4'>
@@ -80,4 +91,4 @@ const DeleteServerModal = () => {
     )
 }
 
-export default DeleteServerModal
+export default DeleteChannelModal
