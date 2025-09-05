@@ -11,11 +11,11 @@ const MainLayout = async ({
     return (
         <div className='h-full'>
             {/* <ModeToggle /> */}
-            <div className={cn('sm:hidden md:flex h-full w-[72px] z-50 flex-col fixed inset-y-0')}>
+            <div className={'sm:hidden md:flex h-full w-[72px] z-50 flex-col fixed inset-y-0'}>
                 <NavgiationSidebar />
             </div>
             <main className='md:pl-[72px] h-full'>
-                {children}
+                {children}  
             </main>
         </div>
     )
