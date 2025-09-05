@@ -1,7 +1,6 @@
 'use client'
 import React from 'react'
 import FileUpload from './FileUpload'
-import "@uploadthing/react/styles.css";
 
 interface FileUploadWrapperProps {
     onChange: (url?: string) => void

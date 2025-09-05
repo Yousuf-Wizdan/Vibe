@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-/* @import "@uploadthing/react/styles.css"; */
+
 
 /* Protect dialog positioning from UploadThing styles */
 [data-slot="dialog-content"] {
@@ -150,3 +150,5 @@
     @apply bg-background text-foreground;
   }
 }
+
+@import "@uploadthing/react/styles.css";
