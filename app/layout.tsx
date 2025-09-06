@@ -5,6 +5,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import ModelProviders from "@/components/providers/ModelProviders";
+import { SocketProvider } from "@/components/providers/SocketProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,8 +45,10 @@ export default function RootLayout({
             defaultTheme="dark"
             enableSystem
             disableTransitionOnChange>
-            <ModelProviders />
-            {children}
+            <SocketProvider>
+              <ModelProviders />
+              {children}
+            </SocketProvider>
           </ThemeProvider>
         </body>
       </html>
