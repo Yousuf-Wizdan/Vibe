@@ -1,5 +1,6 @@
 import ChatHeader from '@/components/chat/ChatHeader'
 import { ChatInput } from '@/components/chat/ChatInput'
+import ChatMessages from '@/components/chat/ChatMessages'
 import { currentProfile } from '@/lib/current-profile'
 import { db } from '@/lib/prisma'
 import { RedirectToSignIn } from '@/lib/redirectToSignIn'
@@ -51,7 +52,20 @@ const ChannelIdPage = async ({params}: ChannelIdPageProps) => {
             
         />
 
-        <div className='flex-1'>Future Messages</div>
+        <ChatMessages 
+            member={member}
+            name={channel.name}
+            chatId={channel.id}
+            type='channel'
+            apiUrl='/api/messages'
+            socketUrl='/api/socket/messages'
+            socketQuery={{
+                channelId: channelId,
+                serverId: channel.serverId
+            }}
+            paramKey='channelId'
+            paramValue={channel.id}
+        />
 
         <ChatInput  
                 apiUrl='/api/socket/messages'
