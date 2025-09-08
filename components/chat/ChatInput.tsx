@@ -14,8 +14,10 @@ import {
     FormItem
 } from '@/components/ui/form'
 import { Input } from '../ui/input'
-import { Plus, Smile } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useModel } from '@/hooks/use-model-store'
+import EmojiPicker from '../EmojiPicker'
+import { useRouter } from 'next/navigation'
 
 interface ChatInputProps {
     apiUrl: string,
@@ -36,6 +38,7 @@ export const ChatInput = ({
 }: ChatInputProps) => {
 
     const {onOpen} = useModel();
+    const router = useRouter();
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -55,6 +58,9 @@ export const ChatInput = ({
             })
 
             await axios.post(url , values)
+
+            form.reset();
+            router.refresh();
 
         }catch(err){
             console.log("ChatInput Error:" , err)
@@ -86,7 +92,9 @@ export const ChatInput = ({
                                         {...field}
                                     />
                                     <div className='absolute top-7 right-8'>
-                                        <Smile className='' />
+                                        <EmojiPicker 
+                                            onChange={(emoji: string) => field.onChange(`${field.value} ${emoji}`)}
+                                        />
                                     </div>
                                 </div>
                             </FormControl>
