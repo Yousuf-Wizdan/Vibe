@@ -7,6 +7,7 @@ import { Loader2, ServerCrash, ShieldAlert, ShieldCheck } from 'lucide-react'
 import { ChatItem } from './ChatItem'
 import { format } from 'date-fns'
 import { useChatSocket } from '@/hooks/use-chat-socket'
+import { useChatScroll } from '@/hooks/use-chat-scroll'
 
 interface ChatMessagesProps {
     name: string,
@@ -61,6 +62,13 @@ const ChatMessages = ({
     })
 
     useChatSocket({ queryKey, addKey, updateKey })
+    useChatScroll({
+        chatRef: chatRef as React.RefObject<HTMLDivElement>,
+        bottomRef: bottomref as React.RefObject<HTMLDivElement>,
+        loadMore: fetchNextPage,
+        shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
+        count: data?.pages?.[0]?.items.length ?? 0
+    })
 
     if (status == 'pending') {
         return (
@@ -92,6 +100,20 @@ const ChatMessages = ({
                     type={type}
                     name={name}
                 />)}
+
+            {hasNextPage && (
+                <div className='flex justify-center'>
+                    {isFetchingNextPage ? (
+                        <Loader2 className='h-6 w-6 text-zinc-500 animate-spin my-4' />
+                    ) : (
+                        <button 
+                        onClick={() => fetchNextPage()}
+                        className='text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition'>
+                            Load previous Messsages
+                        </button>
+                    )}
+                </div>
+            )}
 
             <div className='flex flex-col-reverse mt-auto'>
                 {data?.pages?.map((group, i) => (
