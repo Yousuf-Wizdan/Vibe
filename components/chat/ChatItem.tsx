@@ -4,7 +4,7 @@ import { Member, MemberRole, Profile } from "@/lib/generated/prisma"
 import UserAvatar from "../UserAvatar"
 import ActionToolTip from "../ActionToolTip"
 import { Edit, FileIcon, FileType, ShieldAlert, ShieldCheck, Trash } from "lucide-react"
-import { de } from "zod/v4/locales"
+import { useRouter , useParams } from "next/navigation"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
@@ -63,7 +63,19 @@ export const ChatItem = ({
 }: ChatItemProps) => {
 
     const [isEditing, setIsEditing] = useState(false);
+    const [isHovered, setIsHovered] = useState(false);
     const {onOpen} = useModel();
+
+    const router = useRouter();
+    const params = useParams();
+
+    const onMemberClick = () => {
+        if(member.id === currentMember.id){
+            return;
+        }
+
+        router.push(`/servers/${params?.serverId}/conversations/${member.id}`);
+    }
 
     const fileType = fileUrl?.split(".").pop()
 
@@ -120,9 +132,13 @@ export const ChatItem = ({
     }
 
     return (
-        <div className="relative group flex items-center hover:bg-black/5 p-4 transition w-full">
+        <div 
+            className="relative group flex items-center hover:bg-black/5 p-4 transition w-full"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+        >
             <div className="group flex gap-x-2 items-start w-full">
-                <div className="cursor-pointer hover:drop-shadow-md transition">
+                <div onClick={onMemberClick} className="cursor-pointer hover:drop-shadow-md transition">
                     <UserAvatar
                         src={member.profile.imageUrl}
                     />
@@ -130,7 +146,7 @@ export const ChatItem = ({
                 <div className="flex flex-col w-full">
                     <div className="flex items-center gap-x-2">
                         <div className="flex items-center">
-                            <p className="font-semibold text-sm hover:underline cursor-pointer">
+                            <p onClick={onMemberClick} className="font-semibold text-sm hover:underline cursor-pointer">
                                 {member.profile.name}
                             </p>
                             <ActionToolTip label={member.role}>
@@ -223,13 +239,13 @@ export const ChatItem = ({
                     )}
                 </div>
             </div>
-            {canDeleteMessage && (
-                <div className="hidden group-hover:flex items-center gap-x-2 absolute p-1 -top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm">
+            {canDeleteMessage && isHovered && (
+                <div className="flex items-center gap-x-2 absolute p-2 top-2 right-5 bg-white dark:bg-zinc-800 border rounded-sm shadow-md z-10">
                     {canEditMessage && (
                         <ActionToolTip label="Edit">
                             <Edit
                                 onClick={() => setIsEditing(true)}
-                                className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
+                                className="cursor-pointer w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition"
                             />
                         </ActionToolTip>
                     )}
@@ -240,7 +256,7 @@ export const ChatItem = ({
                                 apiUrl: `${socketUrl}/${id}`,
                                 query: socketQuery
                             })}
-                            className="cursor-pointer ml-auto w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition" />
+                            className="cursor-pointer w-4 h-4 text-zinc-500 hover:text-zinc-600 dark:hover:text-zinc-300 transition" />
                     </ActionToolTip>
                 </div>
             )}
