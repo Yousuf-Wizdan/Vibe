@@ -3,7 +3,7 @@
 import { Member, MemberRole, Profile } from "@/lib/generated/prisma"
 import UserAvatar from "../UserAvatar"
 import ActionToolTip from "../ActionToolTip"
-import { Edit, FileIcon, FileType, ShieldAlert, ShieldCheck, Trash } from "lucide-react"
+import { Edit, FileIcon, ShieldAlert, ShieldCheck, Trash } from "lucide-react"
 import { useRouter , useParams } from "next/navigation"
 import Image from "next/image"
 import { useEffect, useState } from "react"

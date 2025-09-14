@@ -1,7 +1,6 @@
 import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
-import React from 'react'
 
 interface InviteCodePageProps {
     params: Promise<{ inviteCode: string }>

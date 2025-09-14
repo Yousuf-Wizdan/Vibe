@@ -17,7 +17,6 @@ import {
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle
@@ -32,7 +31,6 @@ import {
 } from '@/components/ui/form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
-import FileUploadWrapper from '../FileUploadWrapper'
 import { useParams, useRouter } from 'next/navigation'
 import { useModel } from '@/hooks/use-model-store'
 import { ChannelType } from '@/lib/generated/prisma'

@@ -16,7 +16,6 @@ import {
 import { useRouter } from 'next/navigation'
 import { useModel } from '@/hooks/use-model-store'
 import { Button } from '../ui/button'
-import { useOrigin } from '@/hooks/use-origin'
 
 const LeaveServerModal = () => {
     const router = useRouter();

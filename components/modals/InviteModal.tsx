@@ -1,22 +1,16 @@
 'use client'
 
-    import * as z from 'zod'
-    import { zodResolver } from '@hookform/resolvers/zod'
-    import { useForm } from 'react-hook-form'
 import React, { useState } from 'react'
 import axios from 'axios'
 
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
-    DialogFooter,
     DialogHeader,
     DialogTitle
 } from '@/components/ui/dialog'
 
 
-import { useRouter } from 'next/navigation'
 import { useModel } from '@/hooks/use-model-store'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'

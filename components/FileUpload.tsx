@@ -3,7 +3,6 @@ import React from 'react'
 import { UploadDropzone } from '@/lib/uploadthing'
 import { FileIcon, X } from 'lucide-react'
 import Image from 'next/image'
-import { Button } from './ui/button'
 
 interface FileUploadProps {
     onChange: (url?: string) => void
@@ -16,7 +15,6 @@ const FileUpload = ({
     value,
     endpoint
 }: FileUploadProps) => {
-    // console.log("value =>" , value)
     const fileType = value?.split('.').pop();
 
     if (value && fileType !== 'pdf') {
