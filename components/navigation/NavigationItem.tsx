@@ -35,8 +35,8 @@ const NavigationItem = ({
                 className='group relative flex items-center'
             >
                 <div className={cn('absolute left-0 bg-primary rounded-r-full transition-all w-[4px]',
-                    params.serverId !== id && "group-hover:h-[20px]",
-                    params.serverId === id ? "h-[36px]" : "h-[8px]"
+                    params?.serverId !== id && "group-hover:h-[20px]",
+                    params?.serverId === id ? "h-[36px]" : "h-[8px]"
                 )} />
 
                 <div className={cn(
