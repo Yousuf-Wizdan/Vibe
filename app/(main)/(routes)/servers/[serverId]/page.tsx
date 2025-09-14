@@ -1,7 +1,6 @@
 import { currentProfile } from '@/lib/current-profile';
 import { db } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
-import React from 'react'
 
 interface ServerPageProps {
   params: Promise<{ serverId: string }>

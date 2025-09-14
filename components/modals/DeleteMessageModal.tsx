@@ -13,12 +13,10 @@ import {
 } from '@/components/ui/dialog'
 
 import qs from 'query-string'
-import { useRouter } from 'next/navigation'
 import { useModel } from '@/hooks/use-model-store'
 import { Button } from '../ui/button'
 
 const DeleteMessageModal = () => {
-    const router = useRouter();
 
     const { isOpen, onClose, type, data } = useModel()
 

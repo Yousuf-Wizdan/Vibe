@@ -9,10 +9,15 @@ export const config = {
     }
 }
 
-const ioHandler = (req: NextApiRequest , res: NextApiResponseServerIo) => {
+type SocketWithIO = NetServer & {
+  io?: ServerIO;
+};
+
+const ioHandler = (_req: NextApiRequest , res: NextApiResponseServerIo) => {
     if(!res.socket.server.io){
         const path = `/api/socket/io`
-        const httpServer: NetServer = res.socket.server as any;
+        const httpServer = res.socket.server as unknown as SocketWithIO;
+        // const httpServer: NetServer = res.socket.server as any;
         const io = new ServerIO(httpServer , {
             path: path,
             addTrailingSlash: false

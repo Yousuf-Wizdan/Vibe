@@ -1,9 +1,7 @@
 import { currentProfilePages } from "@/lib/current-profile-pages";
 import { db } from "@/lib/prisma";
 import { NextApiResponseServerIo } from "@/types";
-import { error } from "console";
 import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponseServerIo) {
     if(req.method !== 'POST'){
