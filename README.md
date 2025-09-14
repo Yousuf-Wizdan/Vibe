@@ -103,8 +103,6 @@ Vibe is a feature-rich, real-time chat application that enables users to create 
     pnpm dev
     ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
 ## 📂 Folder Structure
 
 -   `app/`: The main application code, following the Next.js App Router structure.
